@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-section text-center">
+    <div class="hero-card">
+        <span class="badge text-bg-primary mb-3">Career Growth Platform</span>
+        <h1>AI Career &amp; Resume Assistant</h1>
+        <p class="lead">Analyze your resume, identify skill gaps, and get AI-powered career guidance.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'upload_resume' %}" class="btn btn-primary btn-lg px-4">Get Started</a>
+            <a href="{% url 'job_matching' %}" class="btn btn-outline-primary btn-lg px-4">Job Matching</a>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="features-container">
+        <h2 class="features-title">What You Can Do</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3 class="feature-title">Resume Analysis</h3>
+                <p class="feature-description">Analyze your resume and get a resume score, strengths, improvements, and skill gaps.</p>
+            </div>
+            <div class="feature-card">
+                <h3 class="feature-title">Job Matching</h3>
+                <p class="feature-description">Compare your skills with available job roles and see matching skills and areas to improve.</p>
+            </div>
+            <div class="feature-card">
+                <h3 class="feature-title">Interview Preparation</h3>
+                <p class="feature-description">Generate interview questions for a selected job role, with resume-based preparation when available.</p>
+            </div>
+            <div class="feature-card">
+                <h3 class="feature-title">Career Guidance</h3>
+                <p class="feature-description">Get career suggestions and guidance based on your skills and profile.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

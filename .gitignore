@@ -1,0 +1,10 @@
+.env
+venv/
+.venv/
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+*.log
+cookies.txt
+scripts/test_resume.pdf

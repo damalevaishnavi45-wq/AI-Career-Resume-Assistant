@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Resume-Based Job Match{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="result-card card border-0 shadow-sm mx-auto">
+        <div class="card-body p-4 p-md-5">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+                <div>
+                    <span class="badge bg-info-subtle text-info-emphasis px-3 py-2 mb-2">Resume-Based Job Match</span>
+                    <h1 class="page-title mb-0">Skill Match</h1>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{% url 'upload_resume' %}" class="btn btn-primary">Upload Resume</a>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Dashboard</a>
+                </div>
+            </div>
+
+            {% if message %}
+                <div class="alert alert-warning" role="alert">
+                    {{ message }}
+                </div>
+            {% elif analysis %}
+                <div class="mb-4">
+                    <div class="card border-0 bg-light h-100">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-2">Detected Skills</h5>
+                            {% if analysis.skills %}
+                                <div class="d-flex flex-wrap gap-2">
+                                    {% for skill in analysis.skills %}
+                                        <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2">{{ skill }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-muted mb-0">No skills were detected in the resume analysis.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if matches %}
+                    <div class="row g-4">
+                        {% for match in matches %}
+                            <div class="col-lg-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h4 class="mb-0 fw-bold">{{ match.job_role }}</h4>
+                                            <span class="badge bg-success text-white px-3 py-2">Match: {{ match.match_percentage }}%</span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <h6 class="fw-bold mb-2">Matching Skills</h6>
+                                            {% if match.matching_skills %}
+                                                <ul class="mb-0 ps-3">
+                                                    {% for skill in match.matching_skills %}
+                                                        <li>{{ skill }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <p class="text-muted mb-0">No matching skills found.</p>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <h6 class="fw-bold mb-2">Skills to Improve</h6>
+                                            {% if match.skills_to_improve %}
+                                                <ul class="mb-0 ps-3">
+                                                    {% for skill in match.skills_to_improve %}
+                                                        <li>{{ skill }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <p class="text-muted mb-0">You already match most of the key skills for this role.</p>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="border-top pt-3">
+                                            <h6 class="fw-bold mb-2">Recommendation</h6>
+                                            <p class="mb-0">{{ match.recommendation }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info" role="alert">
+                        No matching job roles were found from the current resume skills.
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

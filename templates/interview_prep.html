@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Interview Preparation{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="result-card card border-0 shadow-sm mx-auto">
+        <div class="card-body p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <span class="badge bg-info-subtle text-info-emphasis px-3 py-2 mb-2">Interview Preparation</span>
+                    <h1 class="page-title mb-0">Practice for Interviews</h1>
+                </div>
+                <div>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Dashboard</a>
+                </div>
+            </div>
+
+            {% if error_message %}
+                <div class="alert alert-warning">{{ error_message }}</div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label class="form-label">Select Role</label>
+                        <select name="role" class="form-select" required>
+                            <option value="">Choose a role</option>
+                            {% for r in roles %}
+                                <option value="{{ r }}">{{ r }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="use_resume" id="use_resume">
+                            <label class="form-check-label" for="use_resume">Tailor to my resume (if available)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <button class="btn btn-primary w-100" type="submit">Generate Questions</button>
+                    </div>
+                </div>
+            </form>
+
+            {% if generated %}
+                <hr class="my-4">
+                <h4 class="mb-3">Questions for {{ generated.role }}</h4>
+                <div class="accordion" id="questionsAccordion">
+                    {% for category, items in generated.categories.items %}
+                        <div class="mb-3">
+                            <h5 class="fw-bold">{{ category }}</h5>
+                            <div class="row g-3">
+                                {% for q in items %}
+                                    <div class="col-md-6">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <div class="card-body">
+                                                <h6 class="fw-semibold">{{ q.question }}</h6>
+                                                <p class="mb-1"><strong>Guidance:</strong> {{ q.guidance }}</p>
+                                                {% if q.key_points %}
+                                                    <p class="mb-1"><strong>Key points:</strong></p>
+                                                    <ul>
+                                                        {% for kp in q.key_points %}
+                                                            <li>{{ kp }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="role" value="{{ generated.role }}">
+                        <button class="btn btn-outline-secondary" type="submit">Regenerate</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

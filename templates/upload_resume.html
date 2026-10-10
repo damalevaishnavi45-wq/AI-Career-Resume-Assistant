@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Resume{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="upload-card card shadow-sm border-0">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h1 class="page-title">Upload Your Resume</h1>
+                        <p class="text-muted mb-0">
+                            Your resume will be reviewed and analyzed by AI later to help identify skill gaps and career opportunities.
+                        </p>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data" class="mt-4">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            Please fix the errors below.
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="id_resume_file" class="form-label fw-semibold">Resume PDF</label>
+                            {{ form.resume_file }}
+                            {% if form.resume_file.errors %}
+                                <div class="text-danger small mt-2">{{ form.resume_file.errors|join:', ' }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-4">Upload Resume</button>
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg px-4">Back to Dashboard</a>
+                        </div>
+                    </form>
+
+                    <div class="progress-wrapper mt-5">
+                        <div class="progress-label">How it works</div>
+                        <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+                            <span class="step-pill active">Upload</span>
+                            <span class="step-arrow">→</span>
+                            <span class="step-pill">AI Analysis</span>
+                            <span class="step-arrow">→</span>
+                            <span class="step-pill">Skill Gap</span>
+                            <span class="step-arrow">→</span>
+                            <span class="step-pill">Career Suggestions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

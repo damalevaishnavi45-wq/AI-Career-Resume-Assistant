@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Resume Analysis{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="result-card card border-0 shadow-sm mx-auto">
+        <div class="card-body p-4 p-md-5">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+                <div>
+                    <span class="badge bg-success-subtle text-success-emphasis px-3 py-2 mb-2">Resume Review</span>
+                    <h1 class="page-title mb-0">AI Career Feedback</h1>
+                </div>
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <a href="{% url 'upload_resume' %}" class="btn btn-primary">Upload Another Resume</a>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+
+            {% if error_message %}
+                <div class="alert alert-warning" role="alert">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+
+            {% if analysis %}
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="card border-0 bg-primary text-white h-100">
+                            <div class="card-body">
+                                <div class="small text-uppercase fw-semibold opacity-75">Resume Score</div>
+                                <div class="display-5 fw-bold mt-2">{{ analysis.resume_score }}/100</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body">
+                                <h5 class="fw-bold mb-3">Summary</h5>
+                                <p class="mb-0">{{ analysis.summary }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="fw-bold mb-3">Skills</h5>
+                                {% if analysis.skills %}
+                                    <ul class="mb-0 ps-3">
+                                        {% for skill in analysis.skills %}
+                                            <li>{{ skill }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="text-muted mb-0">No skills were detected.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="fw-bold mb-3">Skill Gaps</h5>
+                                {% if analysis.skill_gaps %}
+                                    <ul class="mb-0 ps-3">
+                                        {% for gap in analysis.skill_gaps %}
+                                            <li>{{ gap }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="text-muted mb-0">No major skill gaps were identified.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="fw-bold mb-3">Strengths</h5>
+                                {% if analysis.strengths %}
+                                    <ul class="mb-0 ps-3">
+                                        {% for strength in analysis.strengths %}
+                                            <li>{{ strength }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="text-muted mb-0">No strengths were identified in the review.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="fw-bold mb-3">Improvements</h5>
+                                {% if analysis.improvements %}
+                                    <ul class="mb-0 ps-3">
+                                        {% for improvement in analysis.improvements %}
+                                            <li>{{ improvement }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="text-muted mb-0">No major improvements were flagged.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="fw-bold mb-3">Career Suggestions</h5>
+                                {% if analysis.career_suggestions %}
+                                    <ul class="mb-0 ps-3">
+                                        {% for role in analysis.career_suggestions %}
+                                            <li>{{ role }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="text-muted mb-0">No career suggestions were provided.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="text-start mt-5 mb-4">
+                <h5 class="fw-bold">Extracted text preview</h5>
+                <div class="p-3 rounded border bg-light text-start extracted-text">
+                    {{ resume.extracted_text|truncatechars:1200|default:"No text extracted yet." }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

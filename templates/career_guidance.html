@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}Career Guidance{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="result-card card border-0 shadow-sm mx-auto">
+        <div class="card-body p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <span class="badge bg-success-subtle text-success-emphasis px-3 py-2 mb-2">Career Guidance</span>
+                    <h1 class="page-title mb-0">Get personalized career guidance</h1>
+                </div>
+                <div>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Dashboard</a>
+                </div>
+            </div>
+
+            {% if error_message %}
+                <div class="alert alert-warning">{{ error_message }}</div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label class="form-label">Select Career Goal</label>
+                        <select name="goal" class="form-select" required>
+                            <option value="">Choose a career goal</option>
+                            {% for r in roles %}
+                                <option value="{{ r }}">{{ r }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="use_resume" id="use_resume">
+                            <label class="form-check-label" for="use_resume">Use my uploaded resume (if available)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <button class="btn btn-primary w-100" type="submit">Get Guidance</button>
+                    </div>
+                </div>
+            </form>
+
+            {% if guidance %}
+                <hr class="my-4">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <h4 class="mb-2">Current Skill Summary</h4>
+                        <p>{{ guidance.current_skill_summary }}</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-2">Recommended Career Direction</h5>
+                        <p>{{ guidance.recommended_career_direction }}</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-2">Entry-Level Roles to Target</h5>
+                        <ul>
+                            {% for r in guidance.entry_level_roles %}
+                                <li>{{ r }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-2">Skills Already Strong</h5>
+                        <ul>
+                            {% for s in guidance.skills_already_strong %}
+                                <li>{{ s }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-2">Skills to Improve</h5>
+                        <ul>
+                            {% for s in guidance.skills_to_improve %}
+                                <li>{{ s }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-2">Suggested Technologies / Tools</h5>
+                        <ul>
+                            {% for t in guidance.suggested_technologies %}
+                                <li>{{ t }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-2">Suggested Project Ideas</h5>
+                        <ul>
+                            {% for p in guidance.suggested_projects %}
+                                <li>{{ p }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="col-12">
+                        <h5 class="mb-2">Suggested Learning Roadmap</h5>
+                        <ol>
+                            {% for step in guidance.suggested_learning_roadmap %}
+                                <li>{{ step }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+
+                    <div class="col-12">
+                        <h5 class="mb-2">Simple Next Steps</h5>
+                        <ul>
+                            {% for s in guidance.next_steps %}
+                                <li>{{ s }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="goal" value="{{ guidance.recommended_career_direction }}">
+                        <button class="btn btn-outline-secondary">Regenerate Guidance</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
