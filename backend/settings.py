@@ -35,7 +35,7 @@ DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = os.getenv(
     'ALLOWED_HOSTS',
-    'localhost,127.0.0.1,testserver'
+    'localhost,127.0.0.1,testserver,ai-career-resume-assistant.onrender.com'
 ).split(',')
 CSRF_TRUSTED_ORIGINS = os.getenv(
     'CSRF_TRUSTED_ORIGINS',
