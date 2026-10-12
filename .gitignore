@@ -8,3 +8,5 @@ media/
 *.log
 cookies.txt
 scripts/test_resume.pdf
+staticfiles/
+
