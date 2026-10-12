@@ -31,7 +31,7 @@ if not SECRET_KEY:
     raise RuntimeError('SECRET_KEY not set in environment. Add SECRET_KEY to your .env')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = os.getenv(
     'ALLOWED_HOSTS',
